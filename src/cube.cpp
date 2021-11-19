@@ -36,12 +36,12 @@ public:
     void initDipVecs()
     {
         dipPos = (vec(0,0,0)+vec(0,0,-1*dipLength)+vec(0,-1*dipLength,0)+vec(dipLength,0,0))*coord(0.5);
-        dipPos = dipPos*coord(numElem_-1);
+        dipPos = dipPos*coord(numElem_);//-1
         vec vi, vrow, vcol;
         vi = vrow = vcol = dipPos;
         int pos = 0;
         int posi = 0;
-        //cout << dipPos << " " << dipPos.vecLength() << endl;//" " << dipDiag/2.0*(numElem_-1) << endl;
+        //cout << dipPos << " " << dipPos.vecLen() << endl;//" " << dipDiag/2.0*(numElem_-1) << endl;
         
         for(int i = 0; i < numElem_; i++)
         {

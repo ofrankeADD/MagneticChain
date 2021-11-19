@@ -2,7 +2,7 @@ CXX = g++
 CPFLAGS = -Wall -Wextra -std=c++11 -fopenmp
 LIBRARYS = 
 
-OBJECTS = vertex.o dipole.o cube.o magnChain.o dataFileHandling.o main3.o
+OBJECTS = vertex.o dipole.o cube.o magnChain.o dataFileHandling.o main.o
 PROJECT = magnChain
 
 $(PROJECT) : $(OBJECTS)

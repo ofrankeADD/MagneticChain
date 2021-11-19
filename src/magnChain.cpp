@@ -16,7 +16,7 @@ using namespace std;
 class magnChain
 {
 private:
-    double edgeLen, magnPerDip;
+    double edgeLen, magnPerDip, Econstr;
     
 public:
     vector<cube> cubeArray;
@@ -143,20 +143,21 @@ public:
         for(int i = 0; i < chainSize-1; i++)
         {
             minCubeDist = vec(chainTemp.cubeArray[i].globalPos - c.globalPos).vecLen();
-            //cout << "minCubeDist(" << i << ")=" << minCubeDist << endl;
-            if(minCubeDist >= sqrt(3)*edgeLen)
+            //cout << "minCubeDist(" << i << "," << Cube << ")=" << minCubeDist << endl;
+            if(minCubeDist >= sqrt(3.0)*(r_+edgeLen))
             {
                 //cout << "minCubeDist >= " << sqrt(3)*edgeLen << endl;
                 volExclusion = true;
             }
-            else if(minCubeDist < (edgeLen-edgeLen/1000.0))
+            else if(minCubeDist < (edgeLen+edgeLen/100.0))
             {
-                //cout << "minCubeDist < " << edgeLen-edgeLen/1000.0 << endl;
+                //cout << "minCubeDist < " << edgeLen+edgeLen/100.0 << endl;
                 volExclusion = false;
                 return false;
             }
             else
             {
+                //cout << "minCubeDist in between" << endl;
                 for(int j = 0; j < totalSize_; j++)
                 {
                     for(int k = 0; k < totalSize_; k++)
@@ -280,58 +281,40 @@ public:
         }
     }
     
-    double translateCube(int c, vec trans)
+    cube translateCube(const int &c, const vec &trans)
     {
         cube temp = cubeArray[c];
         vec globalTrans = cubeArray[c].globalPos + trans;
-        double Econstr;
         int first, second;
         
         findClosestNeighbours(c, first, second);
-        //cout << "first:" << first << ", second:" << second << endl;
+        //cout << "c:" << c << ", first:" << first << ", second:" << second << endl;
         
-        //if(c > 0 && c < numCubes_-1){
-            vec distLeft = globalTrans - cubeArray[first].globalPos;
-            vec distRight = cubeArray[second].globalPos - globalTrans;
-            
-            double deltaLeft = distLeft.vecLen() - r_;
-            double deltaRight = distRight.vecLen() - r_;
-            
-            double kappaLeft = kappa_/pow(constrFac_*distLeft.vecLen(), 2);
-            double kappaRight = kappa_/pow(constrFac_*distRight.vecLen(), 2);
-            Econstr = kappaLeft*(deltaLeft*deltaLeft) + kappaRight*(deltaRight*deltaRight);
-            
-            temp.globalPos = globalTrans;
-        //}
-        /*else if(c == 0)
+        vec distLeft = globalTrans - cubeArray[first].globalPos;
+        vec distRight = cubeArray[second].globalPos - globalTrans;
+        
+        double deltaLeft = distLeft.vecLen();// - r_;
+        double deltaRight = distRight.vecLen();// - r_;
+        
+        double kappaLeft = kappa_/pow(constrFac_*distLeft.vecLen(), 2);
+        double kappaRight = kappa_/pow(constrFac_*distRight.vecLen(), 2);
+        this->Econstr = kappaLeft*(deltaLeft*deltaLeft) + kappaRight*(deltaRight*deltaRight);
+        
+        temp.globalPos = globalTrans;
+        
+        if((deltaLeft >= 2.0*(r_+edgeLen)) || (deltaRight >= 2.0*(r_+edgeLen)))
         {
-            vec distRight = cubeArray[c+1].globalPos - globalTrans;
-            double deltaRight = distRight.vecLen() - r_;
-            
-            double kappa = kappa_/pow(constrFac_*distRight.vecLen(), 2);
-            Econstr = 2.0*kappa*(deltaRight*deltaRight);
-            
-            temp.globalPos = globalTrans;
+            return cubeArray[c];
         }
-        else if(c == numCubes_ -1)
-        {
-            vec distLeft = globalTrans - cubeArray[c-1].globalPos;
-            double deltaLeft = distLeft.vecLen() - r_;
-            
-            double kappa = kappa_/pow(constrFac_*distLeft.vecLen(), 2);
-            Econstr = 2.0*kappa*(deltaLeft*deltaLeft);
-            
-            temp.globalPos = globalTrans;
-        }*/
         
         if(checkVolExclusion(temp, c))
         {
-            return Econstr;
+            return temp;
         }
         else
         {
             //cout << "couldn't translate cube, volExclusion" << endl;
-            return 0.0;
+            return cubeArray[c];
         }
     }
     
@@ -376,28 +359,47 @@ public:
     
     void findClosestNeighbours(const int& c, int &firstNearest, int &secondNearest)
     {
-        double tempDist, firstDist = 100.0, secondDist = 100.0;
-        
-        for(int i = 0; i < numCubes_; i++)
+        if((c == chainSize-1) || (c == 0))
         {
-        	if(i != c)
-        	{
-            	tempDist = (cubeArray[c].globalPos - cubeArray[i].globalPos).vecLen();
+            double tempDist, nearestDist = 100.0;
+            for(int i = 0; i < numCubes_; i++)
+            {
+                if(i != c)
+                {
+                    tempDist = (cubeArray[c].globalPos - cubeArray[i].globalPos).vecLen();
+                    if(nearestDist > tempDist)
+                    {
+                        nearestDist = tempDist;
+                        firstNearest = i;
+                        secondNearest = i;
+                    }
+                }
+            }
+        }
+        else
+        {
+            double tempDist, firstDist = 100.0, secondDist = 100.0;
+            for(int i = 0; i < numCubes_; i++)
+            {
+            	if(i != c)
+            	{
+                	tempDist = (cubeArray[c].globalPos - cubeArray[i].globalPos).vecLen();
 
-	            if(firstDist > tempDist)
-	            {
-	            	secondNearest = firstNearest;
-	                firstNearest = i;
+    	            if(firstDist > tempDist)
+    	            {
+    	            	secondNearest = firstNearest;
+    	                firstNearest = i;
 
-	                secondDist = firstDist;
-	                firstDist = tempDist;
-	            }
-	            else if(secondDist > tempDist)
-	            {
-	            	secondNearest = i;
-	            	secondDist = tempDist;
-	            }
-	        }
+    	                secondDist = firstDist;
+    	                firstDist = tempDist;
+    	            }
+    	            else if(secondDist > tempDist)
+    	            {
+    	            	secondNearest = i;
+    	            	secondDist = tempDist;
+    	            }
+    	        }
+            }
         }
     }
     

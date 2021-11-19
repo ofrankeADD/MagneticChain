@@ -4,6 +4,7 @@
 #include <iostream>
 #include <stdio.h>
 #include <fstream>
+#include <string>
 using namespace std;
 #include "vertex.cpp"
 #include "dipole.cpp"
@@ -14,37 +15,41 @@ using namespace std;
 class dataFileHandling
 {
 private:
+    string c = to_string(numCubes_);
+    string e = to_string(numElem_);
+    string r = to_string(runs_);
+    string s = to_string(runs_/steps_);
     
 public:
     dataFileHandling()
     {
-        ofstream chainCoords_file("./res/chainCoords.txt", ios::out | ios::trunc);
+        ofstream chainCoords_file("../res/chainCoords.txt", ios::out | ios::trunc);
         chainCoords_file.close();
         //ofstream chainCoords_file2("chainCoords.txt", ios::out | ios::app);
         //chainCoords_file2 << numCubes_ << endl;
         //chainCoords_file2 << "moves" << endl;
         //chainCoords_file2.close();
-        ofstream chainEnergy_file("./res/chainEnergy.txt", ios::out | ios::trunc);
+        ofstream chainEnergy_file("../res/chainEnergy.txt", ios::out | ios::trunc);
         chainEnergy_file.close();
-        ofstream dipVecs_first_file("./res/dipVecsCoords_first.txt", ios::out | ios::trunc);
+        ofstream dipVecs_first_file("../res/dipVecsCoords_first.txt", ios::out | ios::trunc);
         dipVecs_first_file.close();
-        ofstream dipVecs_last_file("./res/dipVecsCoords_last.txt", ios::out | ios::trunc);
+        ofstream dipVecs_last_file("../res/dipVecsCoords_last.txt", ios::out | ios::trunc);
         dipVecs_last_file.close();
-        ofstream dipVecs_last_py_file("./res/py/dipVecsCoords_last_py.txt", ios::out | ios::trunc);
+        ofstream dipVecs_last_py_file("../res/dipVecsCoords_all_c"+c+"_e"+e+"_r"+r+"_s"+s+".txt", ios::out | ios::trunc);
         dipVecs_last_py_file.close();
-        ofstream dipMoms_first_file("./res/dipMomsCoords_first.txt", ios::out | ios::trunc);
+        ofstream dipMoms_first_file("../res/dipMomsCoords_first.txt", ios::out | ios::trunc);
         dipMoms_first_file.close();
-        ofstream dipMoms_last_file("./res/dipMomsCoords_last.txt", ios::out | ios::trunc);
+        ofstream dipMoms_last_file("../res/dipMomsCoords_last.txt", ios::out | ios::trunc);
         dipMoms_last_file.close();
-        ofstream globPosCoords_file("./res/globPosCoords.txt", ios::out | ios::trunc);
+        ofstream globPosCoords_file("../res/globPosCoords.txt", ios::out | ios::trunc);
         globPosCoords_file.close();
-        /*ofstream oneCube_randMagnMom_first_file("./res/oneCube_randMagnMom_first.txt", ios::out | ios::trunc);
+        /*ofstream oneCube_randMagnMom_first_file("../res/oneCube_randMagnMom_first.txt", ios::out | ios::trunc);
         oneCube_randMagnMom_first_file.close();
-        ofstream oneCube_randMagnMom_last_file("./res/oneCube_randMagnMom_last.txt", ios::out | ios::trunc);
+        ofstream oneCube_randMagnMom_last_file("../res/oneCube_randMagnMom_last.txt", ios::out | ios::trunc);
         oneCube_randMagnMom_last_file.close();
-        ofstream oneCube_randMagnMom_energy_file("./res/oneCube_randMagnMom_energy.txt", ios::out | ios::trunc);
+        ofstream oneCube_randMagnMom_energy_file("../res/oneCube_randMagnMom_energy.txt", ios::out | ios::trunc);
         oneCube_randMagnMom_energy_file.close();
-        ofstream oneCube_randMagnMom_coords_file("./res/oneCube_randMagnMom_coords.txt", ios::out | ios::trunc);
+        ofstream oneCube_randMagnMom_coords_file("../res/oneCube_randMagnMom_coords.txt", ios::out | ios::trunc);
         oneCube_randMagnMom_coords_file.close();*/
         
         cout << "dataFiles truncated!" << endl;
@@ -54,7 +59,7 @@ public:
 
     void writeChainCoords(const magnChain& ch)
     {
-        ofstream chainCoords_file("./res/chainCoords.txt", ios::out | ios::app);
+        ofstream chainCoords_file("../res/chainCoords.txt", ios::out | ios::app);
         chainCoords_file << numCubes_ << endl;
         chainCoords_file << "moves" << endl;
         //chainCoords_file << "#i" << '\t' << "x" << '\t' << "y" << '\t' << "z" << endl;
@@ -70,18 +75,37 @@ public:
     
     void writeChainEnergy(const int& run, const double& energy)
     {
-        ofstream chainEnergy_file("./res/chainEnergy.txt", ios::out | ios::app);
+        ofstream chainEnergy_file("../res/chainEnergy.txt", ios::out | ios::app);
         //chainCoords_file << numCubes_ << endl;
         //chainCoords_file << "moves" << endl;
         chainEnergy_file << run << '\t' << energy << endl;
 
         chainEnergy_file.close();
     }
-    
-    void snapshot(magnChain ch, string snapshot, double energy, double avgAngleCubePos, double avgAngleMagnMom, double avgCenterDist)
+
+    void writeDipVecsAll(magnChain ch, int run)
     {
-        string txtFile = "./res/dipVecsCoords_" + snapshot + ".txt";
-        string txtFile_py = "./res/py/dipVecsCoords_" + snapshot + "_py.txt";
+        ofstream dipVecsCoords_all_file("../res/dipVecsCoords_all_c"+c+"_e"+e+"_r"+r+"_s"+s+".txt", ios::out | ios::app);
+        dipVecsCoords_all_file << "#run" << '\t' << run << endl;
+        
+        for(int i = 0; i < numCubes_; i++)
+        {
+            dipVecsCoords_all_file << "#cube" << '\t' << i << endl;
+            for(int j = 0; j < totalSize_; j++)
+            {
+                vec v = ch.cubeArray[i].globalPos + ch.cubeArray[i].dipArray[j].dipVec;
+                dipVecsCoords_all_file << j << '\t' << v.x << '\t' << v.y << '\t' << v.z << endl;
+            }
+            dipVecsCoords_all_file << endl;
+            dipVecsCoords_all_file << endl;
+        }
+        dipVecsCoords_all_file.close();
+    }
+
+    void writeSnapshot(magnChain ch, string snapshot, double energy, double avgAngleCubePos, double avgAngleMagnMom, double avgCenterDist)
+    {
+        string txtFile = "../res/dipVecsCoords_" + snapshot + ".txt";
+        string txtFile_py = "../res/py/dipVecsCoords_" + snapshot + "_py.txt";
         ofstream dipVecsCoords_file(txtFile, ios::out | ios::app);
         ofstream dipVecsCoords_py_file(txtFile_py, ios::out | ios::app);
         dipVecsCoords_file << "#energy" << '\t' << "avgAngleCubePos" << '\t' << "avgAngleMagnMom" << '\t' << "avgCenterDist" << endl;
@@ -106,7 +130,7 @@ public:
         dipVecsCoords_file.close();
         dipVecsCoords_py_file.close();
         
-        ofstream globPosCoords_file("./res/globPosCoords.txt", ios::out | ios::app);
+        ofstream globPosCoords_file("../res/globPosCoords.txt", ios::out | ios::app);
         globPosCoords_file << "x" << '\t' << "y" << '\t' << "z" << endl;
         
         for(int i = 0; i < numCubes_; i++)
@@ -118,7 +142,7 @@ public:
         globPosCoords_file << endl;
         globPosCoords_file.close();
 
-        string txtFile2 = "./res/dipMomsCoords_" + snapshot + ".txt";
+        string txtFile2 = "../res/dipMomsCoords_" + snapshot + ".txt";
         ofstream dipMomsCoords_file(txtFile2, ios::out | ios::app);
         dipMomsCoords_file << "#x" << '\t' << "y" << '\t' << "z" << endl;
         
@@ -137,7 +161,7 @@ public:
 
     void writeOneCubeSnapshot(cube oneC, string snapshot)
     {
-        string txtFile = "./res/oneCube_randMagnMom_" + snapshot + ".txt";
+        string txtFile = "../res/oneCube_randMagnMom_" + snapshot + ".txt";
         ofstream oneCube_randMagnMom_file(txtFile, ios::out | ios::app);
         oneCube_randMagnMom_file << "#rx" << '\t' << "ry" << '\t' << "rz" << '\t' << "mx" << '\t' << "my" << '\t' << "mz" << endl;
         
@@ -155,14 +179,14 @@ public:
     
     void writeOneCubeEnergy(int mcStep, double energy)
     {
-        ofstream oneCube_randMagnMom_energy_file("./res/oneCube_randMagnMom_energy.txt", ios::out | ios::app);
+        ofstream oneCube_randMagnMom_energy_file("../res/oneCube_randMagnMom_energy.txt", ios::out | ios::app);
         oneCube_randMagnMom_energy_file << mcStep << '\t' << energy << endl;
         oneCube_randMagnMom_energy_file.close();
     }
 
     void writeOneCubeCoords(cube oneC)
     {
-        ofstream oneCube_randMagnMom_coords_file("./res/oneCube_randMagnMom_coords.txt", ios::out | ios::app);
+        ofstream oneCube_randMagnMom_coords_file("../res/oneCube_randMagnMom_coords.txt", ios::out | ios::app);
         
         for(int i = 0; i < totalSize_; i++)
         {
