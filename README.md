@@ -18,3 +18,9 @@
 - at every stepping time a snapshot is written containing the position vectors and the energy value.
 - the Python script is used in order to visualize the movement of the cubic chain, either for one snapshot or for all in form of a movie
 - the input parameters for the Python script have to be: n, 'all', m, stepsize, total_runs
+
+<img src="https://user-images.githubusercontent.com/49908052/142904977-32e01a40-3841-4e8f-90a9-77800fc34035.png" width="520"/>
+<p float="left">
+<img src="https://user-images.githubusercontent.com/49908052/142904689-10754cb5-8eb9-4bd6-b849-d916ab174d85.gif" width="420"/>
+<img src="https://user-images.githubusercontent.com/49908052/142904879-37e0bbef-fcad-409b-9b94-bf6e3efb61b4.gif" width="420"/>
+</p>
