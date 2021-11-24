@@ -18,9 +18,9 @@
 - otherwise within a certain probability, discard the new chain configuration
 
 ### The data output is written as follows:
-- at every stepping time a snapshot is written containing the position vectors and the energy value.
-- the Python script is used in order to visualize the movement of the cubic chain, either for one snapshot or for all in form of a movie
-- the input parameters for the Python script have to be: 'all', n, m, stepsize, total_runs
+- at regular time step intervals a snapshot is written containing the position vectors and the energy value.
+- the Python script is used in order to visualize the movement of the cubic chain, either for one snapshot as a png or for all by creating a gif movie
+- the input parameters for the Python script have to be in this order: 'all', n, m, stepsize, total_runs
 
 <img src="https://user-images.githubusercontent.com/49908052/142904977-32e01a40-3841-4e8f-90a9-77800fc34035.png" width="520"/>
 <p float="left">
