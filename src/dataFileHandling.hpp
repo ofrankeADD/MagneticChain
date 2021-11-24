@@ -61,15 +61,15 @@ public:
     
     void writeChainEnergy(const int& run, const double& energy);
 
-    void writeDipVecsAll(magnChain ch, int run);
+    void writeDipVecsAll(magnChain& ch, const int& run);
 
-    void writeSnapshot(magnChain ch, string snapshot, double energy, double avgAngleCubePos, double avgAngleMagnMom, double avgCenterDist);
+    void writeSnapshot(magnChain& ch, const string& snapshot, const double& energy, const double& avgAngleCubePos, const double& avgAngleMagnMom, const double& avgCenterDist);
 
-    void writeOneCubeSnapshot(cube oneC, string snapshot);
+    void writeOneCubeSnapshot(const cube& oneC, const string& snapshot);
     
-    void writeOneCubeEnergy(int mcStep, double energy);
+    void writeOneCubeEnergy(const int& mcStep, const double& energy);
 
-    void writeOneCubeCoords(cube oneC);
+    void writeOneCubeCoords(const cube& oneC);
 };
 
 #endif

@@ -25,7 +25,8 @@ The initial conditions are build as follows:
 - the total magnetic chain consists of m x n^3 "elemental" dipoles
 
 The Metropolis Monte Carlo Algorithm is executed as follows:
-- calculate the total energy for all individual dipole-dipole interactions of all cubes in the chain
+- calculate the total magnetic energy for all individual dipole-dipole interactions of all cubes in the chain
+- this process is parallelized using fopenmp
 - for each Monte Carlo step, either rotate or translate a randomly selected cube
 - check that the updated cube position is not colliding with any other cubic volume
 - calculate the updated total energy budget

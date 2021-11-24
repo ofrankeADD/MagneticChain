@@ -85,7 +85,7 @@ def make_movie_all(numElem, chainSize, steps, runs):
     subprocess.call("ffmpeg -y -framerate 10 -i "+filename+"_%03d.png -pix_fmt yuv420p -vf scale=1280:-2 "+filename_movie+"_z"+str(zoom)+"_movie.mp4", shell=True)
     subprocess.call("ffmpeg -y -i "+filename_movie+"_z"+str(zoom)+"_movie.mp4 -vf 'fps=10,scale=340:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse' -loop 0 "+filename_movie+"_z"+str(zoom)+"_movie.gif", shell=True)
 
-def main(numElem, name, chainSize, steps, runs):
+def main(name, numElem, chainSize, steps, runs):
     if name == 'all':
         make_movie_all(numElem, chainSize, steps, runs)
 
@@ -120,5 +120,5 @@ def main(numElem, name, chainSize, steps, runs):
         #plt.close(fig)
 
 if __name__ == "__main__":
-    main(int(sys.argv[1]), sys.argv[2], int(sys.argv[3]), int(sys.argv[4]), int(sys.argv[5]))
+    main(sys.argv[1], int(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4]), int(sys.argv[5]))
 

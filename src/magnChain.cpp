@@ -147,7 +147,7 @@ bool magnChain::checkVolExclusion(cube& c, const int& Cube)
     return volExclusion;
 }
 
-cube magnChain::rotateSelf(const int &c, vec &axis, double &phi)
+cube magnChain::rotateSelf(const int& c, vec& axis, const double& phi)
 {
     //with rotation matrix:
     cube temp = cubeArray[c];
@@ -194,7 +194,7 @@ cube magnChain::rotateSelf(const int &c, vec &axis, double &phi)
     }
 }
 
-cube magnChain::rotateSphere(int c, double theta, double phi)
+cube magnChain::rotateSphere(const int& c, const double& theta, const double& phi)
 {
     cube temp = cubeArray[c];
     
@@ -228,7 +228,7 @@ cube magnChain::rotateSphere(int c, double theta, double phi)
     }
 }
 
-cube magnChain::translateCube(const int &c, const vec &trans)
+cube magnChain::translateCube(const int& c, const vec& trans)
 {
     cube temp = cubeArray[c];
     vec globalTrans = cubeArray[c].globalPos + trans;
@@ -265,7 +265,7 @@ cube magnChain::translateCube(const int &c, const vec &trans)
     }
 }
 
-void magnChain::findClosestNeighbours(const int& c, int &firstNearest, int &secondNearest)
+void magnChain::findClosestNeighbours(const int& c, int& firstNearest, int& secondNearest)
 {
     if((c == chainSize-1) || (c == 0))
     {
@@ -311,7 +311,7 @@ void magnChain::findClosestNeighbours(const int& c, int &firstNearest, int &seco
     }
 }
 
-void magnChain::timeAverage(const int& c, double &angleCubePos, double &angleMagnMom)
+void magnChain::timeAverage(const int& c, double& angleCubePos, double& angleMagnMom)
 {
     int left = 0, right = 0;
     findClosestNeighbours(c, left, right);

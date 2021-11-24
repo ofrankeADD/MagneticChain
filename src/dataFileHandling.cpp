@@ -27,7 +27,7 @@ void dataFileHandling::writeChainEnergy(const int& run, const double& energy)
     chainEnergy_file.close();
 }
 
-void dataFileHandling::writeDipVecsAll(magnChain ch, int run)
+void dataFileHandling::writeDipVecsAll(magnChain& ch, const int& run)
 {
     ofstream dipVecsCoords_all_file("../res/dipVecsCoords_all_c"+c+"_e"+e+"_r"+r+"_s"+s+".txt", ios::out | ios::app);
     dipVecsCoords_all_file << "#run" << '\t' << run << endl;
@@ -46,7 +46,7 @@ void dataFileHandling::writeDipVecsAll(magnChain ch, int run)
     dipVecsCoords_all_file.close();
 }
 
-void dataFileHandling::writeSnapshot(magnChain ch, string snapshot, double energy, double avgAngleCubePos, double avgAngleMagnMom, double avgCenterDist)
+void dataFileHandling::writeSnapshot(magnChain& ch, const string& snapshot, const double& energy, const double& avgAngleCubePos, const double& avgAngleMagnMom, const double& avgCenterDist)
 {
     string txtFile = "../res/dipVecsCoords_" + snapshot + ".txt";
     string txtFile_py = "../res/py/dipVecsCoords_" + snapshot + "_py.txt";
@@ -103,7 +103,7 @@ void dataFileHandling::writeSnapshot(magnChain ch, string snapshot, double energ
     dipMomsCoords_file.close();
 }
 
-void dataFileHandling::writeOneCubeSnapshot(cube oneC, string snapshot)
+void dataFileHandling::writeOneCubeSnapshot(const cube& oneC, const string& snapshot)
 {
     string txtFile = "../res/oneCube_randMagnMom_" + snapshot + ".txt";
     ofstream oneCube_randMagnMom_file(txtFile, ios::out | ios::app);
@@ -121,14 +121,14 @@ void dataFileHandling::writeOneCubeSnapshot(cube oneC, string snapshot)
     oneCube_randMagnMom_file.close();
 }
 
-void dataFileHandling::writeOneCubeEnergy(int mcStep, double energy)
+void dataFileHandling::writeOneCubeEnergy(const int& mcStep, const double& energy)
 {
     ofstream oneCube_randMagnMom_energy_file("../res/oneCube_randMagnMom_energy.txt", ios::out | ios::app);
     oneCube_randMagnMom_energy_file << mcStep << '\t' << energy << endl;
     oneCube_randMagnMom_energy_file.close();
 }
 
-void dataFileHandling::writeOneCubeCoords(cube oneC)
+void dataFileHandling::writeOneCubeCoords(const cube& oneC)
 {
     ofstream oneCube_randMagnMom_coords_file("../res/oneCube_randMagnMom_coords.txt", ios::out | ios::app);
     

@@ -37,21 +37,31 @@ public:
 
     void initCubesYaxis(vec cubeVec, vec mom, double d);
     
+    /*
+    - all dipole-dipole interactions between two cubes
+    */
     double dipInteract(cube& c1, cube& c2);
     
+    /*
+    - calculate the magnetic energy via the dipole-dipole interactions for the whole chain
+    */
     double chainInteract();
     
+    /*
+    - only allow a rotation or translation of a randomly picked cube, if the new altered position 
+    of this cube is not colliding with any other cube of the chain
+    */
     bool checkVolExclusion(cube& c, const int& Cube);
     
-    cube rotateSelf(const int &c, vec &axis, double &phi);
+    cube rotateSelf(const int& c, vec& axis, const double& phi);
     
-    cube rotateSphere(int c, double theta, double phi);
+    cube rotateSphere(const int& c, const double& theta, const double& phi);
     
-    cube translateCube(const int &c, const vec &trans);
+    cube translateCube(const int& c, const vec& trans);
     
-    void findClosestNeighbours(const int& c, int &firstNearest, int &secondNearest);
+    void findClosestNeighbours(const int& c, int& firstNearest, int& secondNearest);
     
-    void timeAverage(const int& c, double &angleCubePos, double &angleMagnMom);
+    void timeAverage(const int& c, double& angleCubePos, double& angleMagnMom);
 };
 
 #endif
