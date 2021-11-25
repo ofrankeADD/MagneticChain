@@ -1,14 +1,17 @@
 # Metropolis Monte Carlo Simulation of a magnetic cubic chain
+
 - How will the chain structure change over time, if randomly picked individual cubes are slightly altered according to the Metropolis algorithm?
 - Thereby, the most computationally costly part of the process has been parallelized at each time step using fopenmp.
 
 ### The initial conditions are build as follows:
+
 - create m cubes aligned along the y-axis in the xy-plane
 - each cube consists of n^3 equidistantly placed dipoles
 - each dipole has an magnetic momentum vector initially pointing in the y-direction
 - the total magnetic chain consists of m x n^3 "elemental" dipoles
 
 ### The Metropolis Monte Carlo Algorithm is executed as follows:
+
 - calculate the total magnetic energy for all individual dipole-dipole interactions of all cubes in the chain
 - this process is parallelized using fopenmp
 - for each Monte Carlo step, either rotate or translate a randomly selected cube
@@ -18,11 +21,13 @@
 - otherwise within a certain probability, discard the new chain configuration
 
 ### The data output is written as follows:
+
 - at regular time step intervals a snapshot is written containing the position vectors and the energy value.
 - the Python script is used in order to visualize the movement of the cubic chain, either for one snapshot as a png or for all by creating a gif movie
 - the input parameters for the Python script have to be in this order: 'all', n, m, stepsize, total_runs
 
 ### TODO:
+
 - randomly change the magnetic momentum configuration of a randomly picked cube
 - tune parameters
 - add test cases
