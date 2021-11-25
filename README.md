@@ -22,6 +22,11 @@
 - the Python script is used in order to visualize the movement of the cubic chain, either for one snapshot as a png or for all by creating a gif movie
 - the input parameters for the Python script have to be in this order: 'all', n, m, stepsize, total_runs
 
+### TODO:
+- randomly change the magnetic momentum configuration of a randomly picked cube
+- tune parameters
+- add test cases
+
 <img src="https://user-images.githubusercontent.com/49908052/142904977-32e01a40-3841-4e8f-90a9-77800fc34035.png" width="520"/>
 <p float="left">
 <img src="https://user-images.githubusercontent.com/49908052/142904689-10754cb5-8eb9-4bd6-b849-d916ab174d85.gif" width="320"/>
